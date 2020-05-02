@@ -7,6 +7,7 @@ on:
 
 jobs:
   build:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     runs-on: ubuntu-latest
 
     strategy:
@@ -43,6 +44,7 @@ jobs:
           CI: true
 
   publish-npm:
+    if: "!contains(github.event.commits[0].message, '[skip ci]')"
     needs: build
     runs-on: ubuntu-latest
     steps:
