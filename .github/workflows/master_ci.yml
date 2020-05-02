@@ -62,6 +62,4 @@ jobs:
       - run: yarn lerna:version
       - run: yarn lerna:publish
         env:
-          USER_NAME: ${{ secrets.DEPLOYING_USER_NAME }}
           CI: true
-          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
