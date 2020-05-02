@@ -1,0 +1,43 @@
+name: Branch CI
+
+on:
+  push:
+    branches-ignore:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: restore lerna
+        uses: actions/cache@master
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: install and build
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          yarn --frozen-lockfile
+      - name: prepare
+        run: yarn prepare
+      - name: lint
+        run: yarn lint
+      - name: test-unit
+        run: yarn test:ci
+      - name: test-e2e
+        run: yarn test:e2e
+        env:
+          CI: true

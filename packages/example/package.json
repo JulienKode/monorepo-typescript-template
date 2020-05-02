@@ -1,0 +1,24 @@
+{
+  "name": "monorepo-typescript-example",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "test": "jest --watch",
+    "test:ci": "echo TEST_NEEDED",
+    "lint": "eslint --ext 'js,jsx,ts,tsx' src/",
+    "lint:fix": "eslint --ext 'js,jsx,ts,tsx' src/ --fix",
+    "test:e2e": "echo TEST_NEEDED",
+    "watch": "babel --watch src ---out-dir lib --extensions '.ts,.tsx'",
+    "build": "babel src --out-dir lib --extensions '.ts,.tsx'",
+    "tsc": "tsc"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-typescript": "^7.9.0",
+    "babel-core": "6.26.3",
+    "babel-jest": "25.1.0",
+    "typescript": "^3.8.3"
+  }
+}

@@ -1,0 +1,67 @@
+name: Master CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x, 14.x]
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: restore lerna
+        uses: actions/cache@master
+        id: cache-deps
+        with:
+          path: |
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-${{ hashFiles('**/yarn.lock') }}
+      - name: install and build
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+        run: |
+          yarn --frozen-lockfile
+      - name: prepare
+        run: yarn prepare
+      - name: lint
+        run: yarn lint
+      - name: test-unit
+        run: yarn test:ci
+      - name: test-e2e
+        run: yarn test:e2e
+        env:
+          CI: true
+
+  publish-npm:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://registry.npmjs.org/
+      - name: Configure CI Git User
+        run: |
+          git config --global user.email bot@julienkarst.com
+          git config --global user.name "BOT KARST DEVELOPMENT"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+      - name: Prepare repository
+        run: git checkout "${GITHUB_REF:11}"
+      - run: yarn --frozen-lockfile
+      - run: yarn lerna:version
+      - run: yarn lerna:publish
+        env:
+          USER_NAME: ${{ secrets.DEPLOYING_USER_NAME }}
+          CI: true
+          NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}

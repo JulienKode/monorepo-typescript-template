@@ -1,0 +1,14 @@
+{
+  "packages": ["packages/*"],
+  "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "command": {
+    "publish": {
+      "message": "chore(release): [skip ci]"
+    },
+    "version": {
+      "message": "chore(release): [skip ci]"
+    }
+  }
+}

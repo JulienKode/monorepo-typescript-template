@@ -1,0 +1,7 @@
+.git
+dist
+*.snap
+node_modules
+storybook-static
+.cache/
+public/
