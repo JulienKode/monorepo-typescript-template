@@ -16,16 +16,18 @@ Template to develop apps with typescript inside a monorepo
 
 It use:
 
-- [x] Lerna to manage the monorepo
-- [x] Yarn as package manager
-- [x] Common jest configuration for all projects inside the monorepo
-- [x] Husky to hooks
+- [x] [Lerna](https://github.com/lerna/lerna) to manage the monorepo
+- [x] [Yarn](https://github.com/yarnpkg/yarn) as package manager
+- [x] [Jest](https://github.com/facebook/jest) configuration for all projects inside the monorepo
+- [x] [Husky](https://github.com/typicode/husky) to hooks
   - `precommit` will lint your files
   - `prepush` will run unit test
-- [x] Github action with theses steps
+- [x] [Github action](https://github.com/actions) with theses steps
   - build
   - lint
   - unit test
   - e2e test
   - publish version
-- [x] Labeller that adds the right label on each project
+- [x] [Labeler](https://github.com/actions/labeler) that adds the right label on each project
+- [x] [Commitlint](https://github.com/conventional-changelog/commitlint)
+- [x] [Pull request name linter](https://github.com/JulienKode/pull-request-name-linter-action) that lint the name of your pull request with commitlint
